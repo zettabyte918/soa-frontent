@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Author } from 'src/app/models/Author';
+import { AuthorService } from 'src/app/services/author.service';
 
 @Component({
   selector: 'app-list',
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
+  authors: Author[] = [];
 
-  constructor() { }
+  constructor(private authorService: AuthorService) { }
 
   ngOnInit(): void {
+    this.authorService.GetAuthors
   }
 
 }
