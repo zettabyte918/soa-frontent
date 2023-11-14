@@ -4,15 +4,16 @@
     <div class="px-4 sm:px-6 lg:px-8">
         <div class="sm:flex sm:items-center">
             <div class="sm:flex-auto">
-                <h1 class="text-xl font-semibold text-gray-900">Users {{authors.length}}</h1>
-                <p class="mt-2 text-sm text-gray-700">A list of all the users in your account including their name,
-                    title,
-                    email and role.</p>
+                <h1 class="text-xl flex items-center font-semibold text-gray-900">Author <span
+                        class="bg-indigo-600 font-medium inline-block ml-2 text-indigo-50 rounded-md px-3">{{authors.length}}</span>
+                </h1>
+                <p class="mt-2 text-sm text-gray-700">A list of all the Authors accounts including their name,
+                    email and birthdate.</p>
             </div>
             <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                <button type="button"
+                <button (click)="isAdding=!isAdding" type="button"
                     class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Add
-                    user</button>
+                    author</button>
             </div>
         </div>
         <div class="mt-8 flex flex-col">
@@ -24,36 +25,133 @@
                                 <tr>
                                     <th scope="col"
                                         class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6">
-                                        Name</th>
-                                    <th scope="col"
-                                        class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                                        Title</th>
+                                        Firstname</th>
+                                    <th scope=" col"
+                                        class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6">
+                                        Lastname</th>
                                     <th scope="col"
                                         class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
                                         Email</th>
+                                    <th *ngIf="isAdding || isEdititngState" scope="col"
+                                        class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                        Password</th>
                                     <th scope="col"
                                         class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                                        Role</th>
+                                        Phone number</th>
+                                    <th scope="col"
+                                        class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                        Birthdate</th>
                                     <th scope="col" class="relative py-3 pl-3 pr-4 sm:pr-6">
                                         <span class="sr-only">Edit</span>
+                                    </th>
+                                    <th scope="col" class="relative py-3 pl-3 pr-4 sm:pr-6">
+                                        <span class="sr-only">Delete</span>
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
-                                <tr>
-                                    <td
-                                        class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                        Lindsay Walton</td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Front-end Developer
+                                <tr *ngIf="isAdding">
+                                    <td class=" pl-4  text-sm">
+                                        <input [(ngModel)]="newAuthor.firstname" type="text" name="name" id="name"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block  sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="first name">
                                     </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                        lindsay.walton@example.com
+                                    <td class=" pl-4  text-sm">
+                                        <input [(ngModel)]="newAuthor.lastname" type="text" name="name" id="name"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block  sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="last name">
                                     </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
+                                    <td class=" pl-4 text-sm">
+                                        <input [(ngModel)]="newAuthor.email" type="email" name="email" id="email"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="you@example.com">
+                                    </td>
+
+                                    <td class="pl-4 text-sm">
+                                        <input [(ngModel)]="newAuthor.password" type="password" name="pass" id="pass"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="******">
+                                    </td>
+                                    <td class="pl-4 text-sm">
+                                        <input [(ngModel)]="newAuthor.tel" type="text" name="tel" id="tel"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="22 222 222">
+                                    </td>
+                                    <td class="pl-4 text-sm">
+                                        <input [(ngModel)]="newAuthor.datenai" type="date" name="date" id="date"
+                                            class="shadow-sm focus:ring-indigo-500 placeholder:text-gray-400 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md">
+                                    </td>
+
                                     <td
                                         class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span
-                                                class="sr-only">, Lindsay Walton</span></a>
+                                        <button (click)="addAuthor()"
+                                            class="text-indigo-600 hover:text-indigo-900">Add</button>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let author of authors;">
+                                    <td *ngIf="!isEditing[author.id || -1]"
+                                        class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                        {{author.firstname}}</td>
+                                    <td *ngIf="isEditing[author.id || -1]" class=" pl-4  text-sm">
+                                        <input [(ngModel)]="author.firstname" type="text" name="name" id="name"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block  sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="full name">
+                                    </td>
+                                    <td *ngIf="!isEditing[author.id || -1]"
+                                        class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                        {{author.lastname}}</td>
+                                    <td *ngIf="isEditing[author.id || -1]" class=" pl-4  text-sm">
+                                        <input [(ngModel)]="author.lastname" type="text" name="name" id="name"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block  sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="full name">
+                                    </td>
+                                    <td *ngIf="!isEditing[author.id || -1]"
+                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{author.email}}
+                                    </td>
+                                    <td *ngIf="isEditing[author.id || -1]" class=" pl-4 text-sm">
+                                        <input [(ngModel)]="author.email" type="email" name="email" id="email"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="you@example.com">
+                                    </td>
+                                    <td *ngIf="isAdding" class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                        ********** </td>
+                                    <td *ngIf="isEditing[author.id || -1]" class="pl-4 text-sm">
+                                        <input [(ngModel)]="author.password" type="text" name="pass" id="pass"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="******">
+                                    </td>
+                                    <td *ngIf="!isEditing[author.id || -1]"
+                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                        {{author.tel}}
+                                    </td>
+                                    <td *ngIf="isEditing[author.id || -1]" class="pl-4 text-sm">
+                                        <input [(ngModel)]="author.tel" type="text" name="tel" id="tel"
+                                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="22 222 222">
+                                    </td>
+
+                                    <td *ngIf="!isEditing[author.id || -1]"
+                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{author.datenai |
+                                        date:'mediumDate'}}
+                                    </td>
+                                    <td *ngIf="isEditing[author.id || -1]" class="pl-4 text-sm">
+                                        <input [(ngModel)]="author.datenai" type="date" name="date" id="date"
+                                            class="shadow-sm focus:ring-indigo-500 placeholder:text-gray-400 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md">
+                                    </td>
+                                    <td *ngIf="!isEditing[author.id || -1]"
+                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                        <button (click)="startEditing(author.id)"
+                                            class="text-indigo-600 hover:text-indigo-900">Edit</button>
+                                    </td>
+                                    <td *ngIf="!isEditing[author.id || -1]"
+                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                        <button (click)="deleteAuthor(author?.id)"
+                                            class="text-red-600 hover:text-red-900">Delete</button>
+                                    </td>
+                                    <td *ngIf="isEditing[author.id || -1]"
+                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                        <button (click)="save(author)"
+                                            class="text-green-600 hover:text-green-900">Save</button>
                                     </td>
                                 </tr>
 

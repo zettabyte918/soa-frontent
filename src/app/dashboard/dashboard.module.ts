@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard.component';
 import { ListComponent } from './authors/list/list.component';
 import { EditComponent } from './authors/edit/edit.component';
 import { AddComponent } from './authors/add/add.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { AddComponent } from './authors/add/add.component';
   ],
   imports: [
     CommonModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
+    FormsModule
   ]
 })
 export class DashboardModule { }
