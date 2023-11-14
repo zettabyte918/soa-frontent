@@ -39,10 +39,13 @@ export class ListComponent implements OnInit {
   }
 
   deleteAuthor(id: any) {
-    this.authorService.DeleteAuthors(id).subscribe((res: Author) => {
-      alert("success");
-      this.getAllAuthors();
-    })
+    const res = confirm("Are you sure yo want to delete this author ?")
+    if (res) {
+      this.authorService.DeleteAuthors(id).subscribe((res: Author) => {
+        alert("success");
+        this.getAllAuthors();
+      })
+    }
   }
 
 
