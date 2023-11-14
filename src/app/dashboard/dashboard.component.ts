@@ -9,6 +9,7 @@ export class DashboardComponent implements OnInit {
 
   constructor() { }
   isMenuProfile: boolean = false;
+  isMenuSideBar: boolean = false;
 
   ngOnInit(): void {
   }

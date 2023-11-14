@@ -13,7 +13,10 @@ export class ListComponent implements OnInit {
   constructor(private authorService: AuthorService) { }
 
   ngOnInit(): void {
-    this.authorService.GetAuthors
+    this.authorService.GetAuthors().subscribe((res: Author[]) => {
+      console.log(res);
+      this.authors = res
+    })
   }
 
 }
