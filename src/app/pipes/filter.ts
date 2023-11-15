@@ -20,9 +20,9 @@ export class FilterPipe implements PipeTransform {
                     item.content.toLowerCase().includes(searchText) ||
                     item.author.firstname.toLowerCase().includes(searchText) ||
                     item.author.lastname.toLowerCase().includes(searchText) ||
-                    item.tel.toLowerCase().includes(searchText) ||
-                    item.email.toLowerCase().includes(searchText) ||
-                    item.datenai.toLowerCase().includes(searchText)
+                    item.author.tel.toLowerCase().includes(searchText) ||
+                    item.author.email.toLowerCase().includes(searchText) ||
+                    item.author.datenai.toLowerCase().includes(searchText)
                 );
 
             // for authors
