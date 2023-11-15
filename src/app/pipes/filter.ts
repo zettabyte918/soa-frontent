@@ -24,6 +24,7 @@ export class FilterPipe implements PipeTransform {
                     item.email.toLowerCase().includes(searchText) ||
                     item.datenai.toLowerCase().includes(searchText)
                 );
+
             // for authors
             else return (
                 item.firstname.toLowerCase().includes(searchText) ||

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { HotToastModule } from '@ngneat/hot-toast';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { ListComponent } from './authors/list/list.component';
@@ -24,7 +24,8 @@ import { FilterPipe } from '../pipes/filter';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    FormsModule
+    FormsModule,
+    HotToastModule.forRoot()
   ]
 })
 export class DashboardModule { }

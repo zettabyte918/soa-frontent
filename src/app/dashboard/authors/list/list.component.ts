@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HotToastService } from '@ngneat/hot-toast';
 import { Author } from 'src/app/models/Author';
 import { AuthorService } from 'src/app/services/author.service';
 
@@ -19,7 +20,7 @@ export class ListComponent implements OnInit {
   showPassword: boolean[] = [];
   isEdititngState: boolean = false;
 
-  constructor(private authorService: AuthorService) {
+  constructor(private authorService: AuthorService, private toast: HotToastService) {
     this.newAuthor = new Author();
 
     this.authors.forEach((author: Author) => {
@@ -51,6 +52,8 @@ export class ListComponent implements OnInit {
       this.isAdding = false;
       this.newAuthor = new Author();
       this.getAllAuthors();
+      this.toast.success("Successfully added a new author!");
+
     })
   }
 
@@ -58,7 +61,7 @@ export class ListComponent implements OnInit {
     const res = confirm("Are you sure yo want to delete this author ?")
     if (res) {
       this.authorService.DeleteAuthors(id).subscribe((res: Author) => {
-        alert("success");
+        this.toast.success("Success this author has been deleted!");
         this.getAllAuthors();
       })
     }
@@ -95,7 +98,7 @@ export class ListComponent implements OnInit {
 
     // update current author
     this.authorService.UpdateAuthor(author).subscribe((res: any) => {
-      alert("update success")
+      this.toast.success("Successfully updated this author!");
     });
   }
 

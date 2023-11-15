@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HotToastService } from '@ngneat/hot-toast';
 import { Author } from 'src/app/models/Author';
 import { Article } from 'src/app/models/article';
 import { ArticleService } from 'src/app/services/article.service';
@@ -20,7 +21,7 @@ export class ArticlesComponent implements OnInit {
   authors: Author[] = [];
   isAdding: boolean = false;
 
-  constructor(private articlesService: ArticleService, private authorsService: AuthorService) {
+  constructor(private articlesService: ArticleService, private authorsService: AuthorService, private toast: HotToastService) {
     this.newArticle = new Article();
     this.newArticle.author = new Author();
 
@@ -31,7 +32,7 @@ export class ArticlesComponent implements OnInit {
 
   save() {
     this.articlesService.AddArticle(this.newArticle).subscribe((res: Article) => {
-      alert("added successfully!");
+      this.toast.success("Successfully added a new article!");
       this.isAdding = false;
       this.newArticle = new Article();
       this.newArticle.author = new Author();
@@ -43,7 +44,7 @@ export class ArticlesComponent implements OnInit {
     const res = confirm("Are you sure you want to delete this article?")
     if (res) {
       this.articlesService.DeleteArticle(id).subscribe((res: Article) => {
-        alert("deleted successfully");
+        this.toast.success("Successfully deleted this article!");
         this.getAllArticles();
       })
     }
@@ -58,7 +59,7 @@ export class ArticlesComponent implements OnInit {
   updateArticle(article: Article) {
     article.author.id = Number(article.author.id);
     this.articlesService.UpdateArticle(article).subscribe((res: Article) => {
-      alert("update successfully!");
+      this.toast.success("Article updated successfully!");
       this.getAllArticles();
     })
 
