@@ -23,6 +23,10 @@ export class AuthorService {
     return this.http.get<Author[]>(`${environment.api_url}/authors`);
   }
 
+  GetAuthor(id: number | undefined): Observable<Author> {
+    return this.http.get<Author>(`${environment.api_url}/authors/${id}`);
+  }
+
   AddAuthor(author: Author): Observable<Author> {
     return this.http.post<Author>(`${environment.api_url}/authors`, author);
   }

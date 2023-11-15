@@ -4,5 +4,5 @@ export class Article {
     id?: number;
     title?: string;
     content?: string;
-    author?: Author;
+    author!: Author;
 }

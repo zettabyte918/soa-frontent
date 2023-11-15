@@ -15,15 +15,15 @@ export class ArticleService {
     return this.http.delete<Article>(`${environment.api_url}/articles/${id}`);
   }
 
-  UpdateArticle(author: Article): Observable<Article> {
-    return this.http.put<Article>(`${environment.api_url}/articles/${author.id}`, author);
+  UpdateArticle(article: Article): Observable<Article> {
+    return this.http.put<Article>(`${environment.api_url}/articles/update/${article.id}`, article);
   }
 
   GetArticles(): Observable<Article[]> {
     return this.http.get<Article[]>(`${environment.api_url}/articles`);
   }
 
-  AddArticle(author: Article): Observable<Article> {
-    return this.http.post<Article>(`${environment.api_url}/articles`, author);
+  AddArticle(article: Article): Observable<Article> {
+    return this.http.post<Article>(`${environment.api_url}/articles?authorId=${article.author.id}`, article);
   }
 }
