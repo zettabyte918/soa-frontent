@@ -13,6 +13,7 @@ export class ListComponent implements OnInit {
 
   newAuthor!: Author;
   isEditing: boolean[] = [];
+  showPassword: boolean[] = [];
   isEdititngState: boolean = false;
 
   constructor(private authorService: AuthorService) {
@@ -23,17 +24,29 @@ export class ListComponent implements OnInit {
     });
   }
 
+  showAuthorPassword(author: Author) {
+    const element = document.getElementById(author.id + "-pass");
+    if (element !== null) {
+      element.innerText = author.password || "";
+      this.showPassword[author.id || -1] = true;
+    }
+  }
+
+  hideAuthorPassword(author: Author) {
+    const element = document.getElementById(author.id + "-pass");
+    if (element !== null) {
+      element.innerText = "*******";
+      this.showPassword[author.id || -1] = false;
+    }
+  }
+
 
   addAuthor() {
-    const firstname = this.newAuthor.firstname?.split(" ")[0]
-    const lasttname = this.newAuthor.firstname?.split(" ")[1]
-
-    this.newAuthor.firstname = firstname;
-    this.newAuthor.lastname = lasttname;
-    this.newAuthor.username = `${firstname}${lasttname}${this.newAuthor.tel}`
+    this.newAuthor.username = `${this.newAuthor.firstname}${this.newAuthor.lastname}${this.newAuthor.tel}`
 
     this.authorService.AddAuthor(this.newAuthor).subscribe((res: Author) => {
       this.isAdding = false;
+      this.newAuthor = new Author();
       this.getAllAuthors();
     })
   }

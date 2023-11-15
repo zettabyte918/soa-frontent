@@ -4,14 +4,14 @@ import { DashboardComponent } from './dashboard.component';
 import { ListComponent } from './authors/list/list.component';
 import { AddComponent } from './authors/add/add.component';
 import { EditComponent } from './authors/edit/edit.component';
+import { ArticlesComponent } from './articles/articles.component';
 
 const routes: Routes = [
   {
     path: '', component: DashboardComponent, children: [
-      { path: "authors/list", component: ListComponent },
-      { path: "authors/add", component: AddComponent },
-      { path: "authors/edit", component: EditComponent },
-      { path: "**", redirectTo: "authors/list" }
+      { path: "authors", component: ListComponent },
+      { path: "articles", component: ArticlesComponent },
+      { path: "**", redirectTo: "authors" }
     ]
   }
 ];

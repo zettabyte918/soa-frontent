@@ -7,6 +7,7 @@ import { ListComponent } from './authors/list/list.component';
 import { EditComponent } from './authors/edit/edit.component';
 import { AddComponent } from './authors/add/add.component';
 import { FormsModule } from '@angular/forms';
+import { ArticlesComponent } from './articles/articles.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { FormsModule } from '@angular/forms';
     DashboardComponent,
     ListComponent,
     EditComponent,
-    AddComponent
+    AddComponent,
+    ArticlesComponent
   ],
   imports: [
     CommonModule,
