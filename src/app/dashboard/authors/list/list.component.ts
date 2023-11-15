@@ -11,6 +11,9 @@ export class ListComponent implements OnInit {
   isAdding: boolean = false;
   authors: Author[] = [];
 
+  // filter author
+  searchTerm: string = "";
+
   newAuthor!: Author;
   isEditing: boolean[] = [];
   showPassword: boolean[] = [];

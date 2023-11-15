@@ -13,6 +13,9 @@ export class ArticlesComponent implements OnInit {
   articles: Article[] = [];
   newArticle!: Article;
 
+  // filter
+  searchTerm: string = "";
+
   isEditing: boolean[] = [];
   authors: Author[] = [];
   isAdding: boolean = false;

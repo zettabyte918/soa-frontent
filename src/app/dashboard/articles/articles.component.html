@@ -16,6 +16,15 @@
                     article</button>
             </div>
         </div>
+        <div class="pt-4 w-60">
+            <label for="email" class="block text-sm font-medium text-gray-700">Search</label>
+            <div class="mt-1">
+                <input [(ngModel)]="searchTerm" type="text" name="search" id="search"
+                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    placeholder="Hossem...">
+            </div>
+            <p class="mt-2 text-sm text-gray-500" id="email-description">Search for a specific article.</p>
+        </div>
         <div class="mt-8 flex flex-col">
             <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -70,7 +79,7 @@
                                     </td>
 
                                 </tr>
-                                <tr *ngFor="let article of articles">
+                                <tr *ngFor="let article of articles | filter: searchTerm">
                                     <td *ngIf="!isEditing[article.id || -1]"
                                         class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                         {{article.title}}</td>

@@ -8,6 +8,8 @@ import { EditComponent } from './authors/edit/edit.component';
 import { AddComponent } from './authors/add/add.component';
 import { FormsModule } from '@angular/forms';
 import { ArticlesComponent } from './articles/articles.component';
+import { FilterPipe } from '../pipes/filter';
+
 
 
 @NgModule({
@@ -16,7 +18,8 @@ import { ArticlesComponent } from './articles/articles.component';
     ListComponent,
     EditComponent,
     AddComponent,
-    ArticlesComponent
+    ArticlesComponent,
+    FilterPipe
   ],
   imports: [
     CommonModule,
