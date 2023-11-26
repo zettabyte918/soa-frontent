@@ -14,6 +14,7 @@ export class ListComponent implements OnInit {
 
   // filter author
   searchTerm: string = "";
+  selectedFile: File | null = null;
 
   newAuthor!: Author;
   isEditing: boolean[] = [];
@@ -27,6 +28,11 @@ export class ListComponent implements OnInit {
       this.isEditing[author.id || -1] = false;
     });
   }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0] as File;
+  }
+
 
   showAuthorPassword(author: Author) {
     const element = document.getElementById(author.id + "-pass");
@@ -51,6 +57,9 @@ export class ListComponent implements OnInit {
     this.authorService.AddAuthor(this.newAuthor).subscribe((res: Author) => {
       this.isAdding = false;
       this.newAuthor = new Author();
+      this.authorService.uploadAvatar(res.id as number, this.selectedFile as File).subscribe((res: any) => {
+        console.log(res);
+      });
       this.getAllAuthors();
       this.toast.success("Successfully added a new author!");
 
@@ -97,7 +106,7 @@ export class ListComponent implements OnInit {
     this.isEdititngState = false;
 
     // update current author
-    this.authorService.UpdateAuthor(author).subscribe((res: any) => {
+    this.authorService.UpdateAuthor(author).subscribe((res: Author) => {
       this.toast.success("Successfully updated this author!");
     });
   }

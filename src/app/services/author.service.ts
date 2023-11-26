@@ -30,4 +30,11 @@ export class AuthorService {
   AddAuthor(author: Author): Observable<Author> {
     return this.http.post<Author>(`${environment.api_url}/authors`, author);
   }
+
+  uploadAvatar(userId: number, file: File) {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+
+    return this.http.post<any>(`${environment.api_url}/authors/${userId}/upload-avatar`, formData);
+  }
 }
