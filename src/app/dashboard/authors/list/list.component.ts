@@ -6,22 +6,26 @@ import { AuthorService } from 'src/app/services/author.service';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit {
   isAdding: boolean = false;
   authors: Author[] = [];
 
   // filter author
-  searchTerm: string = "";
+  searchTerm: string = '';
   selectedFile: File | null = null;
+  selectedImage: string | ArrayBuffer | null = null;
 
   newAuthor!: Author;
   isEditing: boolean[] = [];
   showPassword: boolean[] = [];
   isEdititngState: boolean = false;
 
-  constructor(private authorService: AuthorService, private toast: HotToastService) {
+  constructor(
+    private authorService: AuthorService,
+    private toast: HotToastService
+  ) {
     this.newAuthor = new Author();
 
     this.authors.forEach((author: Author) => {
@@ -29,59 +33,70 @@ export class ListComponent implements OnInit {
     });
   }
 
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0] as File;
+  onFileSelected(event: any): void {
+    const fileInput = event.target;
+
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.selectedImage = e.target?.result as string;
+      };
+
+      reader.readAsDataURL(fileInput.files[0]);
+
+      // If you need to store the selected file, you can assign it to this.selectedFile
+      this.selectedFile = fileInput.files[0] as File;
+    }
   }
 
-
   showAuthorPassword(author: Author) {
-    const element = document.getElementById(author.id + "-pass");
+    const element = document.getElementById(author.id + '-pass');
     if (element !== null) {
-      element.innerText = author.password || "";
+      element.innerText = author.password || '';
       this.showPassword[author.id || -1] = true;
     }
   }
 
   hideAuthorPassword(author: Author) {
-    const element = document.getElementById(author.id + "-pass");
+    const element = document.getElementById(author.id + '-pass');
     if (element !== null) {
-      element.innerText = "*******";
+      element.innerText = '*******';
       this.showPassword[author.id || -1] = false;
     }
   }
 
-
   addAuthor() {
-    this.newAuthor.username = `${this.newAuthor.firstname}${this.newAuthor.lastname}${this.newAuthor.tel}`
+    this.newAuthor.username = `${this.newAuthor.firstname}${this.newAuthor.lastname}${this.newAuthor.tel}`;
 
     this.authorService.AddAuthor(this.newAuthor).subscribe((res: Author) => {
       this.isAdding = false;
       this.newAuthor = new Author();
-      this.authorService.uploadAvatar(res.id as number, this.selectedFile as File).subscribe((res: any) => {
-        console.log(res);
-      });
-      this.getAllAuthors();
-      this.toast.success("Successfully added a new author!");
-
-    })
+      this.authorService
+        .uploadAvatar(res.id as number, this.selectedFile as File)
+        .subscribe((res: any) => {
+          // update authors list after uplaod the avatar
+          this.getAllAuthors();
+        });
+      this.toast.success('Successfully added a new author!');
+    });
   }
 
   deleteAuthor(id: any) {
-    const res = confirm("Are you sure yo want to delete this author ?")
+    const res = confirm('Are you sure yo want to delete this author ?');
     if (res) {
       this.authorService.DeleteAuthors(id).subscribe((res: Author) => {
-        this.toast.success("Success this author has been deleted!");
+        this.toast.success('Success this author has been deleted!');
         this.getAllAuthors();
-      })
+      });
     }
   }
 
-
   getAllAuthors() {
     this.authorService.GetAuthors().subscribe((res: Author[]) => {
-      this.authors = res
+      this.authors = res;
       this.updateDateFormats();
-    })
+    });
   }
 
   updateDateFormats() {
@@ -107,14 +122,11 @@ export class ListComponent implements OnInit {
 
     // update current author
     this.authorService.UpdateAuthor(author).subscribe((res: Author) => {
-      this.toast.success("Successfully updated this author!");
+      this.toast.success('Successfully updated this author!');
     });
   }
-
-
 
   ngOnInit(): void {
     this.getAllAuthors();
   }
-
 }
