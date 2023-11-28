@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
 import { catchError, of } from 'rxjs';
@@ -8,9 +9,39 @@ import { AuthorService } from 'src/app/services/author.service';
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
+  animations: [
+    trigger('AnimationTrigger0', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms ease-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1 }),
+        animate('200ms ease-in', style({ opacity: 0 })),
+      ]),
+    ]),
+    trigger('AnimationTrigger1', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(1rem)' }),
+        animate(
+          '300ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1, transform: 'translateY(0)' }),
+        animate(
+          '200ms ease-in',
+          style({ opacity: 0, transform: 'translateY(1rem)' })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class ListComponent implements OnInit {
+  isModal: Boolean = false;
   isAdding: boolean = false;
+  currentAuthor: Author = new Author();
   authors: Author[] = [];
 
   // filter author
@@ -31,6 +62,19 @@ export class ListComponent implements OnInit {
 
     this.authors.forEach((author: Author) => {
       this.isEditing[author.id || -1] = false;
+    });
+  }
+
+  closeImagesModal() {
+    this.isModal = false;
+    this.currentAuthor = new Author();
+  }
+
+  openImagesModal(id: number) {
+    this.authorService.GetAuthor(id).subscribe((author: Author) => {
+      this.isModal = true;
+      this.currentAuthor = author;
+      console.log(this.currentAuthor);
     });
   }
 
