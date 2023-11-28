@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
+import { catchError, of } from 'rxjs';
 import { Author } from 'src/app/models/Author';
 import { AuthorService } from 'src/app/services/author.service';
 
@@ -74,6 +75,14 @@ export class ListComponent implements OnInit {
       this.newAuthor = new Author();
       this.authorService
         .uploadAvatar(res.id as number, this.selectedFile as File)
+        .pipe(
+          this.toast.observe({
+            loading: 'Detecting faces...',
+            success: (s) => s.message,
+            error: (e) => e.error.message,
+          }),
+          catchError((error) => of(error))
+        )
         .subscribe((res: any) => {
           // update authors list after uplaod the avatar
           this.getAllAuthors();
