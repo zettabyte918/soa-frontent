@@ -190,6 +190,64 @@
                 role="list"
                 class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-8"
               >
+                <li *ngIf="authService.hasRole('ADMIN')" class="relative">
+                  <!-- Current: "ring-2 ring-offset-2 ring-indigo-500", Default: "focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500" -->
+                  <div
+                    (click)="fileInput.click()"
+                    class="ring-2 h-32 flex justify-center items-center ring-offset-2 ring-indigo-500 group w-full aspect-w-10 aspect-h-4 rounded-lg bg-gray-100 overflow-hidden"
+                  >
+                    <!-- Current: "", Default: "group-hover:opacity-75" -->
+                    <svg
+                      *ngIf="!selectedImage"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-20 h-20 text-gray-500"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 4.5v15m7.5-7.5h-15"
+                      />
+                    </svg>
+                    <img
+                      *ngIf="selectedImage"
+                      class=""
+                      [src]="selectedImage"
+                      alt=""
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    (click)="uploadImage()"
+                    class="inline-flex justify-center mt-2 w-36 -ml-1 items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Upload
+                    <!-- Heroicon name: solid/mail -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-6 h-6 ml-1"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </button>
+                  <input
+                    type="file"
+                    #fileInput
+                    style="display: none"
+                    (change)="onFileSelected($event)"
+                  />
+                </li>
                 <li
                   *ngFor="let avatar of currentAuthor.avatarUrls"
                   class="relative"
@@ -206,7 +264,9 @@
                     />
                   </div>
                   <button
+                    *ngIf="authService.hasRole('ADMIN')"
                     type="button"
+                    (click)="deleteAvatar(avatar)"
                     class="inline-flex justify-center mt-2 w-36 -ml-1 items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                   >
                     Delete
@@ -235,14 +295,8 @@
         </div>
       </div>
       <div
-        class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense"
+        class="mt-5 sm:mt-6 sm:grid sm:grid-cols-1 sm:gap-3 sm:grid-flow-row-dense"
       >
-        <button
-          type="button"
-          class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-        >
-          Deactivate
-        </button>
         <button
           (click)="closeImagesModal()"
           type="button"
@@ -274,6 +328,7 @@
       </div>
       <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
         <button
+          *ngIf="authService.hasRole('ADMIN')"
           (click)="isAdding = !isAdding"
           type="button"
           class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
@@ -621,6 +676,7 @@
                     class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
                   >
                     <button
+                      *ngIf="authService.hasRole('ADMIN')"
                       (click)="startEditing(author.id)"
                       class="text-indigo-600 hover:text-indigo-900"
                     >
@@ -632,6 +688,7 @@
                     class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
                   >
                     <button
+                      *ngIf="authService.hasRole('ADMIN')"
                       (click)="deleteAuthor(author?.id)"
                       class="text-red-600 hover:text-red-900"
                     >
@@ -643,6 +700,7 @@
                     class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
                   >
                     <button
+                      *ngIf="authService.hasRole('ADMIN')"
                       (click)="save(author)"
                       class="text-green-600 hover:text-green-900"
                     >

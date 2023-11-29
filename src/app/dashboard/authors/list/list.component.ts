@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
 import { catchError, of } from 'rxjs';
 import { Author } from 'src/app/models/Author';
+import { AuthService } from 'src/app/services/auth.service';
 import { AuthorService } from 'src/app/services/author.service';
 
 @Component({
@@ -56,6 +57,7 @@ export class ListComponent implements OnInit {
 
   constructor(
     private authorService: AuthorService,
+    public authService: AuthService,
     private toast: HotToastService
   ) {
     this.newAuthor = new Author();
@@ -70,12 +72,53 @@ export class ListComponent implements OnInit {
     this.currentAuthor = new Author();
   }
 
+  deleteAvatar(avatar: String) {
+    this.authorService
+      .deleteAvatar(this.currentAuthor.id || -1, avatar)
+      .subscribe((res: any) => {
+        this.authorService
+          .GetAuthor(this.currentAuthor.id)
+          .subscribe((author: Author) => {
+            this.currentAuthor.avatarUrls = author.avatarUrls;
+            this.getAllAuthors();
+            console.log('delete image: ' + this.currentAuthor);
+          });
+      });
+  }
+
   openImagesModal(id: number) {
     this.authorService.GetAuthor(id).subscribe((author: Author) => {
       this.isModal = true;
       this.currentAuthor = author;
+      this.currentAuthor.id = id;
       console.log(this.currentAuthor);
     });
+  }
+
+  uploadImage() {
+    this.authorService
+      .uploadAvatar(this.currentAuthor.id as number, this.selectedFile as File)
+      .pipe(
+        this.toast.observe({
+          loading: 'Detecting faces...',
+          success: (s) => s.message,
+          error: (e) => e.error.message,
+        }),
+        catchError((error) => of(error))
+      )
+      .subscribe((res: any) => {
+        // update authors list after uplaod the avatar
+        this.getAllAuthors();
+        this.authorService
+          .GetAuthor(this.currentAuthor.id)
+          .subscribe((author: Author) => {
+            this.isModal = true;
+            this.currentAuthor.avatarUrls = author.avatarUrls;
+            console.log(this.currentAuthor);
+          });
+        this.selectedImage = null;
+        this.selectedFile = null;
+      });
   }
 
   onFileSelected(event: any): void {
@@ -131,6 +174,9 @@ export class ListComponent implements OnInit {
           // update authors list after uplaod the avatar
           this.getAllAuthors();
         });
+      this.getAllAuthors();
+      this.selectedFile = null;
+      this.selectedImage = null;
       this.toast.success('Successfully added a new author!');
     });
   }
