@@ -732,11 +732,15 @@
                     />
                   </td>
                   <td
-                    (click)="openSMSModal(author.id)"
                     *ngIf="!isEditing[author.id || -1]"
                     class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                   >
                     {{ author.tel }}
+                    <span
+                      (click)="openSMSModal(author.id)"
+                      class="bg-indigo-500 text-indigo-50 px-1 py-0.5 rounded-md font-medium"
+                      >SMS</span
+                    >
                   </td>
                   <td *ngIf="isEditing[author.id || -1]" class="pl-4 text-sm">
                     <input
