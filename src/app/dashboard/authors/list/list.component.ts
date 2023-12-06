@@ -41,12 +41,14 @@ import { AuthorService } from 'src/app/services/author.service';
 })
 export class ListComponent implements OnInit {
   isModal: Boolean = false;
+  isModal2: Boolean = false;
   isAdding: boolean = false;
   currentAuthor: Author = new Author();
   authors: Author[] = [];
 
   // filter author
   searchTerm: string = '';
+  smsMessage: string = '';
   selectedFile: File | null = null;
   selectedImage: string | ArrayBuffer | null = null;
 
@@ -67,6 +69,21 @@ export class ListComponent implements OnInit {
     });
   }
 
+  sendSMS() {
+    this.authorService
+      .SendSMS(this.currentAuthor.tel || '', this.smsMessage)
+      .subscribe((res: any) => {
+        this.toast.success(
+          `SMS sent to ${this.currentAuthor.firstname} successfully!`
+        );
+      });
+  }
+
+  closeImagesModal2() {
+    this.isModal2 = false;
+    this.smsMessage = '';
+  }
+
   closeImagesModal() {
     this.isModal = false;
     this.currentAuthor = new Author();
@@ -84,6 +101,14 @@ export class ListComponent implements OnInit {
             console.log('delete image: ' + this.currentAuthor);
           });
       });
+  }
+
+  openSMSModal(id: any) {
+    this.authorService.GetAuthor(id).subscribe((author: Author) => {
+      this.isModal2 = true;
+      this.currentAuthor = author;
+      this.currentAuthor.id = id;
+    });
   }
 
   openImagesModal(id: number) {

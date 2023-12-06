@@ -23,26 +23,49 @@ export class AuthorService {
 
     return this.http.put<Author>(
       `${environment.api_url}/authors/${author.id}`,
-      author
+      author,
+      {
+        headers,
+      }
     );
   }
 
   GetAuthors(): Observable<Author[]> {
     const headers = this.authService.getHeaders();
 
-    return this.http.get<Author[]>(`${environment.api_url}/authors`);
+    return this.http.get<Author[]>(`${environment.api_url}/authors`, {
+      headers,
+    });
   }
 
   GetAuthor(id: number | undefined): Observable<Author> {
     const headers = this.authService.getHeaders();
 
-    return this.http.get<Author>(`${environment.api_url}/authors/${id}`);
+    return this.http.get<Author>(`${environment.api_url}/authors/${id}`, {
+      headers,
+    });
   }
 
   AddAuthor(author: Author): Observable<Author> {
     const headers = this.authService.getHeaders();
 
-    return this.http.post<Author>(`${environment.api_url}/authors`, author);
+    return this.http.post<Author>(`${environment.api_url}/authors`, author, {
+      headers,
+    });
+  }
+
+  SendSMS(tel: String, message: String) {
+    const data = {
+      phone_number: tel,
+      message: message,
+    };
+    const headers = this.authService.getHeaders();
+
+    return this.http.post<Author>(
+      `${environment.microservice_sms}/send/`,
+      data,
+      { headers }
+    );
   }
 
   uploadAvatar(userId: number, file: File) {
@@ -53,7 +76,10 @@ export class AuthorService {
 
     return this.http.post<any>(
       `${environment.api_url}/authors/${userId}/upload-avatar`,
-      formData
+      formData,
+      {
+        headers,
+      }
     );
   }
 
@@ -61,7 +87,10 @@ export class AuthorService {
     const headers = this.authService.getHeaders();
 
     return this.http.delete<any>(
-      `${environment.api_url}/authors/${id}/delete-avatar?avatarUrl=${avatar}`
+      `${environment.api_url}/authors/${id}/delete-avatar?avatarUrl=${avatar}`,
+      {
+        headers,
+      }
     );
   }
 }
